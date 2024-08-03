@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PasswordStorageApp.Webapi.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PasswordStorageApp.Webapi.Dtos
 {
@@ -9,5 +10,18 @@ namespace PasswordStorageApp.Webapi.Dtos
 
         [Required, MinLength(6), MaxLength(40)]
         public string Password { get; set; }
+
+        public Account ToAccount()
+        {
+            return new Account
+            {
+                Id = Ulid.NewUlid().ToGuid(),
+                Username = Username,
+                Password = Password,
+                CreatedOn = DateTimeOffset.UtcNow
+
+            };
+            
+        }
     }
 }
