@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PasswordStorageApp.Webapi.Models;
 using PasswordStorageApp.Webapi.Persistence;
+using System.Security.Principal;
 
 namespace PasswordStorageApp.Webapi.Controllers
 {
@@ -25,6 +27,21 @@ namespace PasswordStorageApp.Webapi.Controllers
                 return NotFound();
 
             return Ok(account);
+        }
+
+        [HttpPost]
+        public IActionResult Create(Account newAccount)
+        {
+
+
+            if (newAccount is null || string.IsNullOrEmpty(newAccount.Username) || string.IsNullOrEmpty(newAccount.Password))
+                return BadRequest();
+
+            FakeDbContext.Accounts.Add(newAccount);
+
+            
+
+            return Ok(newAccount.Id);
         }
 
         [HttpDelete("{id:guid}")]
