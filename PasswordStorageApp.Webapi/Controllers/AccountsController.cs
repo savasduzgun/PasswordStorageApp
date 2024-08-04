@@ -42,6 +42,18 @@ namespace PasswordStorageApp.Webapi.Controllers
             return Ok(new { data = account.Id, message = "The account was added successfully!" });
         }
 
+        [HttpPut("{id:guid}")]
+        public IActionResult Update(Guid id, AccountUpdateDto updateDto)
+        {
+
+            var account = Account.ToAccount();
+
+            FakeDbContext.Accounts.Add(account);
+
+            //return Ok(account.Id);
+            return Ok(new { data = account.Id, message = "The account was added successfully!" });
+        }
+
         [HttpDelete("{id:guid}")]
         public IActionResult Remove(Guid id)
         {
