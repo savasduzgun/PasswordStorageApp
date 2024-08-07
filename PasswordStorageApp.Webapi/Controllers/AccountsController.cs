@@ -45,8 +45,11 @@ namespace PasswordStorageApp.Webapi.Controllers
         [HttpPut("{id:guid}")]
         public IActionResult Update(Guid id, AccountUpdateDto updateDto)
         {
-
-            var account = Account.ToAccount();
+            if (id!=updateDto.Id)
+            {
+                return BadRequest("The id in the URL does not match the id in the body");
+            }
+            var account = newAccount.ToAccount();
 
             FakeDbContext.Accounts.Add(account);
 
