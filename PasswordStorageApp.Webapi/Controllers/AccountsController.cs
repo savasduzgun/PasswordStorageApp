@@ -49,12 +49,16 @@ namespace PasswordStorageApp.Webapi.Controllers
             {
                 return BadRequest("The id in the URL does not match the id in the body");
             }
-            var account = newAccount.ToAccount();
 
-            FakeDbContext.Accounts.Add(account);
+            var account = FakeDbContext.Accounts.FirstOrDefault(ac=>ac.Id==id);
 
-            //return Ok(account.Id);
-            return Ok(new { data = account.Id, message = "The account was added successfully!" });
+            var updatedAccount = updateDto.ToAccount(account);
+
+            var index = FakeDbContext.Accounts.FindIndex(ac => ac.Id == id);
+
+            FakeDbContext.Accounts[index] = updatedAccount;
+
+            return Ok(new { data = updatedAccount, message = "The account was updated successfully!" });
         }
 
         [HttpDelete("{id:guid}")]
