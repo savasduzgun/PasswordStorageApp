@@ -1,4 +1,5 @@
-﻿using PasswordStorageApp.Webapi.Models;
+﻿using PasswordStorageApp.Webapi.Enums;
+using PasswordStorageApp.Webapi.Models;
 
 namespace PasswordStorageApp.Webapi.Dtos
 {
@@ -7,12 +8,15 @@ namespace PasswordStorageApp.Webapi.Dtos
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public AccountType Type { get; set; }
 
 
         public Account ToAccount(Account account)
         {
             account.Username = Username;
             account.Password = Password;
+            account.Type = Type;
+            account.ModifiedOn = DateTimeOffset.UtcNow;
 
             return account;
         }
