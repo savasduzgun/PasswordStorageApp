@@ -1,4 +1,5 @@
-﻿using PasswordStorageApp.Webapi.Models;
+﻿using PasswordStorageApp.Webapi.Enums;
+using PasswordStorageApp.Webapi.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace PasswordStorageApp.Webapi.Dtos
@@ -11,6 +12,9 @@ namespace PasswordStorageApp.Webapi.Dtos
         [Required, MinLength(6), MaxLength(40)]
         public string Password { get; set; }
 
+        [Required, AllowedValues(AccountType.Web, AccountType.Mobile, AccountType.Desktop)]
+        public AccountType Type { get; set; }
+
         public Account ToAccount()
         {
             return new Account
@@ -18,6 +22,7 @@ namespace PasswordStorageApp.Webapi.Dtos
                 Id = Ulid.NewUlid().ToGuid(),
                 Username = Username,
                 Password = Password,
+                Type = Type,
                 CreatedOn = DateTimeOffset.UtcNow
 
             };
