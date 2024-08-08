@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PasswordStorageApp.Webapi.Enums;
 using PasswordStorageApp.Webapi.Models;
 
 namespace PasswordStorageApp.Webapi.Persistence.Configurations
@@ -8,7 +9,29 @@ namespace PasswordStorageApp.Webapi.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            throw new NotImplementedException();
+            //ID
+            builder.HasKey(x => x.Id);
+            builder.Property(x=>x.Id).ValueGeneratedOnAdd();
+
+            //Username
+            builder.Property(x=>x.Username).IsRequired().HasMaxLength(50);
+            //UsernameIndex
+            builder.HasIndex(x => x.Username);
+
+            //Password
+            builder.Property(x => x.Password).IsRequired().HasMaxLength(50);
+
+            //Type
+            builder.Property(x => x.Type).HasConversion<int>().HasDefaultValue(AccountType.Web).IsRequired();
+
+            //CreatedOn
+            builder.Property(x => x.CreatedOn).IsRequired();
+
+            //ModifiedOn
+            builder.Property(x => x.ModifiedOn).IsRequired(false);
+
+            //TableName
+            builder.ToTable("Accounts");
         }
     }
 }
