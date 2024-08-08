@@ -16,5 +16,12 @@ namespace PasswordStorageApp.Webapi.Persistence.Contexts
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.UseInMemoryDatabase("PasswordStorageApp");
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PasswordStorageApp.Webapi.Dtos;
 using PasswordStorageApp.Webapi.Models;
 using PasswordStorageApp.Webapi.Persistence;
+using PasswordStorageApp.Webapi.Persistence.Contexts;
 using System.Security.Principal;
 
 namespace PasswordStorageApp.Webapi.Controllers
@@ -11,17 +13,24 @@ namespace PasswordStorageApp.Webapi.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetAll()
+        private readonly ApplicationDbContext _dbContext;
+
+        public AccountsController(ApplicationDbContext dbContext)
         {
-            var accounts = FakeDbContext.Accounts.ToList();
+            _dbContext = dbContext;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
+        {
+            var accounts = await _dbContext.Accounts.AsNoTracking().ToListAsync(cancellationToken);
             return Ok(accounts);
         }
 
         [HttpGet("{id:guid}")]
-        public IActionResult GetById(Guid id)
+        public async Task<ActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var account = FakeDbContext.Accounts.FirstOrDefault(ac => ac.Id == id);
+            var account = await _dbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(ac => ac.Id == id, cancellationToken);
 
             if (account is null)
 
@@ -36,7 +45,7 @@ namespace PasswordStorageApp.Webapi.Controllers
 
             var account = newAccount.ToAccount();
             
-            FakeDbContext.Accounts.Add(account);
+            _dbContext.Accounts.Add(account);
 
             //return Ok(account.Id);
             return Ok(new { data = account.Id, message = "The account was added successfully!" });
@@ -50,13 +59,13 @@ namespace PasswordStorageApp.Webapi.Controllers
                 return BadRequest("The id in the URL does not match the id in the body");
             }
 
-            var account = FakeDbContext.Accounts.FirstOrDefault(ac=>ac.Id==id);
+            var account = _dbContext.Accounts.FirstOrDefault(ac=>ac.Id==id);
 
             var updatedAccount = updateDto.ToAccount(account);
 
-            var index = FakeDbContext.Accounts.FindIndex(ac => ac.Id == id);
+            var index = _dbContext.Accounts.FindIndex(ac => ac.Id == id);
 
-            FakeDbContext.Accounts[index] = updatedAccount;
+            _dbContext.Accounts[index] = updatedAccount;
 
             return Ok(new { data = updatedAccount, message = "The account was updated successfully!" });
         }
@@ -66,13 +75,13 @@ namespace PasswordStorageApp.Webapi.Controllers
         {
             if (id == Guid.Empty)
                 return BadRequest("id is not valid. Please do not send empty guids for god sake!");
-            var account = FakeDbContext.Accounts.FirstOrDefault(ac => ac.Id == id);
+            var account = _dbContext.Accounts.FirstOrDefault(ac => ac.Id == id);
 
             if (account is null)
 
                 return NotFound();
 
-            FakeDbContext.Accounts.Remove(account);
+            _dbContext.Accounts.Remove(account);
 
             return NoContent();
         }

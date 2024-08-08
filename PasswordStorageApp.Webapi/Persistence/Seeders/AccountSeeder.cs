@@ -1,11 +1,18 @@
-﻿using PasswordStorageApp.Webapi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PasswordStorageApp.Webapi.Models;
 
-namespace PasswordStorageApp.Webapi.Persistence
+namespace PasswordStorageApp.Webapi.Persistence.Seeders
 {
-    public class FakeDbContext
+    public class AccountSeeder : IEntityTypeConfiguration<Account>
     {
-        public static List<Account> Accounts { get; set; } =
- [
+        public void Configure(EntityTypeBuilder<Account> builder)
+        {
+            builder.HasData(_accounts);
+        }
+
+        private readonly List<Account> _accounts =
+        [
      new Account
     {
         Id = Guid.Parse("71f3d31c-d0ef-11ee-a506-0242ac120002"),
@@ -41,6 +48,6 @@ namespace PasswordStorageApp.Webapi.Persistence
         Password = "M1k3R0ss#2024",
         CreatedOn = DateTimeOffset.Parse("2024-01-18T08:55:00Z")
         },
-];
+        ];
     }
 }
