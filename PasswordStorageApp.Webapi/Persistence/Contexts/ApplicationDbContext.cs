@@ -21,7 +21,7 @@ namespace PasswordStorageApp.Webapi.Persistence.Contexts
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseInMemoryDatabase("PasswordStorageApp");
+            optionsBuilder.UseSqlite("Data Source=PasswordStorageApp.db");
         }
     }
 }
