@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PasswordStorageApp.Webapi.Dtos;
-using PasswordStorageApp.Webapi.Models;
-using PasswordStorageApp.Webapi.Persistence;
 using PasswordStorageApp.Webapi.Persistence.Contexts;
-using System.Security.Principal;
 
 namespace PasswordStorageApp.Webapi.Controllers
 {
@@ -28,7 +25,7 @@ namespace PasswordStorageApp.Webapi.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var account = await _dbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(ac => ac.Id == id, cancellationToken);
 
@@ -40,19 +37,21 @@ namespace PasswordStorageApp.Webapi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AccountCreateDto newAccount)
+        public async Task<IActionResult> CreateAsync(AccountCreateDto newAccount, CancellationToken cancellationToken)
         {
 
             var account = newAccount.ToAccount();
             
             _dbContext.Accounts.Add(account);
 
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
             //return Ok(account.Id);
             return Ok(new { data = account.Id, message = "The account was added successfully!" });
         }
 
         [HttpPut("{id:guid}")]
-        public IActionResult Update(Guid id, AccountUpdateDto updateDto)
+        public async Task<IActionResult> UpdateAsync(Guid id, AccountUpdateDto updateDto, CancellationToken cancellationToken)
         {
             if (id!=updateDto.Id)
             {
@@ -63,15 +62,13 @@ namespace PasswordStorageApp.Webapi.Controllers
 
             var updatedAccount = updateDto.ToAccount(account);
 
-            var index = _dbContext.Accounts.FindIndex(ac => ac.Id == id);
-
-            _dbContext.Accounts[index] = updatedAccount;
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return Ok(new { data = updatedAccount, message = "The account was updated successfully!" });
         }
 
         [HttpDelete("{id:guid}")]
-        public IActionResult Remove(Guid id)
+        public async Task<IActionResult> RemoveAsync(Guid id, CancellationToken cancellationToken)
         {
             if (id == Guid.Empty)
                 return BadRequest("id is not valid. Please do not send empty guids for god sake!");
@@ -82,6 +79,8 @@ namespace PasswordStorageApp.Webapi.Controllers
                 return NotFound();
 
             _dbContext.Accounts.Remove(account);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return NoContent();
         }
