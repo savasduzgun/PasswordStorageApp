@@ -1,5 +1,5 @@
 ﻿using PasswordStorageApp.Domain.Enums;
-using PasswordStorageApp.Webapi.Models;
+using PasswordStorageApp.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace PasswordStorageApp.Domain.Dtos
