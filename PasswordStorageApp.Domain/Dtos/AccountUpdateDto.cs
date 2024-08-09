@@ -1,7 +1,7 @@
-﻿using PasswordStorageApp.Webapi.Enums;
+﻿using PasswordStorageApp.Domain.Enums;
 using PasswordStorageApp.Webapi.Models;
 
-namespace PasswordStorageApp.Webapi.Dtos
+namespace PasswordStorageApp.Domain.Dtos
 {
     public class AccountUpdateDto
     {
