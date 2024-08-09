@@ -22,4 +22,5 @@ namespace PasswordStorageApp.Domain.Dtos
                 CreatedOn = account.CreatedOn
             };
         }
+    }
 }
