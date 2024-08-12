@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PasswordStorageApp.Webapi.Models;
+using PasswordStorageApp.Domain.Models;
 using PasswordStorageApp.Webapi.Persistence.Configurations;
 
 namespace PasswordStorageApp.Webapi.Persistence.Contexts

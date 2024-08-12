@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PasswordStorageApp.Webapi.Models;
+using PasswordStorageApp.Domain.Models;
 
 namespace PasswordStorageApp.Webapi.Persistence.Seeders
 {
