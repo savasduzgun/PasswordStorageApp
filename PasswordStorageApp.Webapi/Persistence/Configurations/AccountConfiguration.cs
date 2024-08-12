@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PasswordStorageApp.Webapi.Enums;
-using PasswordStorageApp.Webapi.Models;
+using PasswordStorageApp.Domain.Enums;
+using PasswordStorageApp.Domain.Models;
+
 
 namespace PasswordStorageApp.Webapi.Persistence.Configurations
 {
