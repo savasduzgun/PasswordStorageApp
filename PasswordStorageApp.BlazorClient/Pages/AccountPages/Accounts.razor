@@ -34,7 +34,7 @@ else
                 <RadzenDataGridColumn Title="Actions" Frozen="true" Sortable="false" Filterable="false" Width="120px" TextAlign="TextAlign.Center">
                     <Template Context="data">
                         <RadzenStack Orientation="Orientation.Horizontal">
-                            <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="edit" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="edit" Click="@(()=> HandleUpdateClickAsync(data.Id))" />
                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Click="@(() => HandleRemoveClickAsync(data))" />
                         </RadzenStack>
                     </Template>
@@ -75,10 +75,10 @@ else
             accounts = await HttpClient.GetFromJsonAsync<IEnumerable<AccountGetAllDto>>("Accounts");
         }
     }
-    private async Task HandleAddClickAsync(Guid id)
+    private async Task HandleUpdateClickAsync(Guid id)
     {
         var result = await DialogService.OpenAsync<AccountsUpdate>($"Hesap Güncelle",
-             new Dictionary<string, object>() { { "IsDialog", true } },
+             new Dictionary<string, object>() { { "IsDialog", true }, { "Id", id } },
              new DialogOptions()
                  {
                      Resizable = true,
