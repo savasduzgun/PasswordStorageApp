@@ -75,6 +75,23 @@ else
             accounts = await HttpClient.GetFromJsonAsync<IEnumerable<AccountGetAllDto>>("Accounts");
         }
     }
+    private async Task HandleAddClickAsync(Guid id)
+    {
+        var result = await DialogService.OpenAsync<AccountsUpdate>($"Hesap Güncelle",
+             new Dictionary<string, object>() { { "IsDialog", true } },
+             new DialogOptions()
+                 {
+                     Resizable = true,
+                     Draggable = true,
+                     Width = "700px",
+                     Height = "512px",
+                 });
+
+        if (result is not null && (bool)result)
+        {
+            accounts = await HttpClient.GetFromJsonAsync<IEnumerable<AccountGetAllDto>>("Accounts");
+        }
+    }
 
     private async Task HandleRemoveClickAsync(AccountGetAllDto account)
     {
