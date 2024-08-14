@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Radzen;
 
 namespace PasswordStorageApp.MauiClient
 {
@@ -16,8 +17,12 @@ namespace PasswordStorageApp.MauiClient
 
             builder.Services.AddMauiBlazorWebView();
 
+            builder.Services.AddRadzenComponents();
+
+            builder.Services.AddScoped<IToastService, RadzenToastManager>();
+
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
