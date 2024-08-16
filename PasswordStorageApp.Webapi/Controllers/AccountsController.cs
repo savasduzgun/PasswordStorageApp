@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using PasswordStorageApp.Domain.Dtos;
 using PasswordStorageApp.Webapi.Persistence.Contexts;
 using PasswordStorageApp.WebApi.Hubs;
-using PasswordStorageApp.WebApi.Persistence.Contexts;
 
 namespace PasswordStorageApp.WebApi.Controllers
 {
